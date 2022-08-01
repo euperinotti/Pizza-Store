@@ -8,6 +8,7 @@ const selectAll = (element) => {
 
 let modalQntd = 1;
 
+// listagem das pizzas
 pizzaJson.map(function(item, index) {
     //pega as informações que estão dentro da div .pizza-item
     let pizzaItem = select('.models .pizza-item').cloneNode(true);
@@ -75,4 +76,18 @@ pizzaJson.map(function(item, index) {
 
     //clona os itens de .pizza-item e insere dentro de .pizza-area
     select('.pizza-area').append(pizzaItem);
+})
+
+// eventos do modal
+
+function closeModal() {
+    select('.pizzaWindowArea').style.opacity = 0;
+    setTimeout(() => {
+        select('.pizzaWindowArea').style.display = 'none';
+    }, 500)
+}
+
+// laço para executar a mesma função em divs diferentes 
+selectAll('.pizzaInfo--cancelButton', '.pizzaInfo--cancelMobileButton').forEach((item) => {
+    item.addEventListener('click', closeModal);
 })
