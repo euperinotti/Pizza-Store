@@ -10,6 +10,8 @@ pizzaJson.map(function(item, index) {
     //pega as informações que estão dentro da div .pizza-item
     let pizzaItem = select('.models .pizza-item').cloneNode(true);
 
+    pizzaItem.setAttribute('data-key', index);
+
     //adiciona a imagem
     pizzaItem.querySelector('.pizza-item--img img').src = item.img
 
@@ -26,6 +28,18 @@ pizzaJson.map(function(item, index) {
     pizzaItem.querySelector('a').addEventListener('click', (event) => {
         event.preventDefault();
 
+        let key = event.target.closest('.pizza-item').getAttribute('data-key');
+
+        //conferir as informacoes da pizza selecionada
+        console.log(pizzaJson[key]);
+        
+        //preenchendo as informacoes da janela de detalhes
+        select('.pizzaBig img').src = pizzaJson[key].img;
+        select('.pizzaInfo h1').innerHTML = pizzaJson[key].name;
+        select('.pizzaInfo--desc').innerHTML = pizzaJson[key].description;
+        select('.pizzaInfo--actualPrice').innerHTML = `R$ ${pizzaJson[key].price.toFixed(2)}`;
+
+        //animacao de abrir a janela
         select('.pizzaWindowArea').style.opacity = 0;
         select('.pizzaWindowArea').style.display = 'flex';
         setTimeout(() => {
