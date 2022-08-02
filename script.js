@@ -45,7 +45,7 @@ pizzaJson.map(function(item, index) {
 
         select('.pizzaInfo--size.selected').classList.remove('selected');
 
-        console.log(selectAll('.pizzaInfo--size'));
+        //console.log(selectAll('.pizzaInfo--size'));
         
         // retorna um array com as divs que possuem essa class
         // executa um laço para cada item desse array
@@ -90,4 +90,25 @@ function closeModal() {
 // laço para executar a mesma função em divs diferentes 
 selectAll('.pizzaInfo--cancelButton', '.pizzaInfo--cancelMobileButton').forEach((item) => {
     item.addEventListener('click', closeModal);
+})
+
+select('.pizzaInfo--qtmenos').addEventListener('click', () => {
+    if(modalQntd > 1){
+        modalQntd--;
+        select('.pizzaInfo--qt').innerHTML = modalQntd;
+    }
+})
+
+select('.pizzaInfo--qtmais').addEventListener('click', () => {
+    modalQntd++;
+    select('.pizzaInfo--qt').innerHTML = modalQntd;
+})
+
+selectAll('.pizzaInfo--size').forEach((size, sizeIndex) => {
+
+    size.addEventListener('click', () => {
+        select('.pizzaInfo--size.selected').classList.remove('selected');
+        size.classList.add('selected');
+    })
+
 })
