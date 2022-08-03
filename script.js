@@ -7,6 +7,8 @@ const selectAll = (element) => {
 }
 
 let modalQntd = 1;
+let modalKey = 0;
+let cart = [];
 
 // listagem das pizzas
 pizzaJson.map(function(item, index) {
@@ -33,6 +35,9 @@ pizzaJson.map(function(item, index) {
 
         let key = event.target.closest('.pizza-item').getAttribute('data-key');
         modalQntd = 1;
+
+        // salva o id da pizza
+        modalKey = key;
 
         //conferir as informacoes da pizza selecionada
         console.log(pizzaJson[key]);
@@ -92,17 +97,27 @@ selectAll('.pizzaInfo--cancelButton', '.pizzaInfo--cancelMobileButton').forEach(
     item.addEventListener('click', closeModal);
 })
 
+// diminui a quantidade de pizzas
 select('.pizzaInfo--qtmenos').addEventListener('click', () => {
     if(modalQntd > 1){
         modalQntd--;
         select('.pizzaInfo--qt').innerHTML = modalQntd;
+
+        // modifica o preço da pizza automaticamente no modal
+        select('.pizzaInfo--actualPrice').innerHTML = `R$ ${(pizzaJson[modalKey].price * modalQntd).toFixed(2)}`;
     }
 })
 
+// aumenta a quantidade de pizzas
 select('.pizzaInfo--qtmais').addEventListener('click', () => {
     modalQntd++;
     select('.pizzaInfo--qt').innerHTML = modalQntd;
+
+    // modifica o preço da pizza automaticamente no modal
+    select('.pizzaInfo--actualPrice').innerHTML = `R$ ${(pizzaJson[modalKey].price * modalQntd).toFixed(2)}`;
 })
+
+// efeito de selecao de tamanhos
 
 selectAll('.pizzaInfo--size').forEach((size, sizeIndex) => {
 
@@ -111,4 +126,16 @@ selectAll('.pizzaInfo--size').forEach((size, sizeIndex) => {
         size.classList.add('selected');
     })
 
+})
+
+select('.pizzaInfo--addButton').addEventListener('click', () => {
+
+    let size = parseInt(select('.pizzaInfo--size.selected').getAttribute('data-key'));
+    console.log(`Pizza: ${modalKey} | Tamanho: ${size} | Quantidade: ${modalQntd}`);
+
+    cart.push({
+        id: pizzaJson[modalKey].id,
+        size,
+        quantidade: modalQntd
+    });
 })
