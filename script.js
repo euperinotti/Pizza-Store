@@ -17,16 +17,9 @@ pizzaJson.map(function(item, index) {
 
     pizzaItem.setAttribute('data-key', index);
 
-    //adiciona a imagem
     pizzaItem.querySelector('.pizza-item--img img').src = item.img
-
-    //adiciona o preco
     pizzaItem.querySelector('.pizza-item--price').innerHTML = `R$ ${item.price.toFixed(2)}`;
-
-    //adiciona o nome
     pizzaItem.querySelector('.pizza-item--name').innerHTML = item.name;
-
-    //adiciona a descricao
     pizzaItem.querySelector('.pizza-item--desc').innerHTML = item.description;
 
     //configurando a janela de detalhes da pizza
@@ -133,9 +126,27 @@ select('.pizzaInfo--addButton').addEventListener('click', () => {
     let size = parseInt(select('.pizzaInfo--size.selected').getAttribute('data-key'));
     console.log(`Pizza: ${modalKey} | Tamanho: ${size} | Quantidade: ${modalQntd}`);
 
-    cart.push({
-        id: pizzaJson[modalKey].id,
-        size,
-        quantidade: modalQntd
+    //gerando o identificador
+    let identifier = pizzaJson[modalKey].id + '@' + size;
+
+    // esse identificador serve para identificar pizzas que tenham o mesmo id
+    // e o mesmo tamanho, para que quando forem adicionadas ao carrinho
+    // sejam adicionadas ao mesmo objeto, ao inves de adicionar um
+    // objeto novo
+
+    let keyIdentify = cart.findIndex((item) => {
+        return item.identifier == identifier;
     });
+
+    if(keyIdentify > -1){
+        cart[keyIdentify].quantidade += modalQntd;
+    } else {
+        cart.push({
+            identifier,
+            id: pizzaJson[modalKey].id,
+            size,
+            quantidade: modalQntd
+        });
+    }
 })
+
