@@ -163,6 +163,10 @@ function updateCart() {
 
         select('.cart').innerHTML = '';
 
+        let subTotal = 0;
+        let desconto = 0;
+        let total = 0;
+
         // laço para pegar o id da pizza no objeto pizzaJson
         // a partir do id do cart
         for(let i in cart){
@@ -170,6 +174,8 @@ function updateCart() {
             let pizzaItem = pizzaJson.find((item) => {
                 return item.id == cart[i].id
             })
+
+            subTotal += pizzaItem.price * cart[i].quantidade;
 
             let cartItem = select('.models .cart--item').cloneNode(true);
             let pizzaSizeName;
@@ -190,10 +196,35 @@ function updateCart() {
 
             cartItem.querySelector('img').src = pizzaItem.img;
             cartItem.querySelector('.cart--item-nome').innerHTML = `${pizzaItem.name} (${pizzaSizeName})`;
-            cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].quantidade
+            cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].quantidade;
+            cartItem.querySelector('.cart--item-qtmenos').addEventListener('click', () => {
+                if(cart[i].quantidade > 1){
+                    cart[i].quantidade--;
+                } else {
+                    // para remover um elemento do carrinho
+                    cart.splice(i, 1);
+                }
+                updateCart();
+            })
+
+            cartItem.querySelector('.cart--item-qtmais').addEventListener('click', () => {
+                cart[i].quantidade++;
+                updateCart();
+            })
 
             select('.cart').append(cartItem);
         }
+
+        desconto = subTotal * 0.1;
+        total = subTotal - desconto;
+
+
+        // pega o último item dentro de uma seleção de elementos
+        // sem classes com a mesma tag
+        select('.subtotal span:last-child').innerHTML = `R$ ${subTotal.toFixed(2)}`;
+        select('.desconto span:last-child').innerHTML = `R$ ${desconto.toFixed(2)}`;
+        select('.total span:last-child').innerHTML = `R$ ${total.toFixed(2)}`;
+
     } else {
         select('aside').classList.remove('show');
     }
