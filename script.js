@@ -148,5 +148,25 @@ select('.pizzaInfo--addButton').addEventListener('click', () => {
             quantidade: modalQntd
         });
     }
+
+    updateCart();
+
 })
+
+function updateCart() {
+    if(cart.length > 0){
+        select('aside').classList.add('show');
+
+        // laço para pegar o id da pizza no objeto pizzaJson
+        // a partir do id do cart
+        for(let i in cart){
+
+            let pizzaItem = pizzaJson.find((item) => {
+                return item.id == cart[i].id
+            })
+        }
+    } else {
+        select('aside').classList.remove('show');
+    }
+}
 
