@@ -149,6 +149,7 @@ select('.pizzaInfo--addButton').addEventListener('click', () => {
         });
     }
 
+    closeModal();
     updateCart();
 
 })
@@ -157,6 +158,11 @@ function updateCart() {
     if(cart.length > 0){
         select('aside').classList.add('show');
 
+        // zera o html do carrinho pra que ele 
+        // mostre apenas pizzas diferentes no carrinho
+
+        select('.cart').innerHTML = '';
+
         // laço para pegar o id da pizza no objeto pizzaJson
         // a partir do id do cart
         for(let i in cart){
@@ -164,6 +170,29 @@ function updateCart() {
             let pizzaItem = pizzaJson.find((item) => {
                 return item.id == cart[i].id
             })
+
+            let cartItem = select('.models .cart--item').cloneNode(true);
+            let pizzaSizeName;
+
+            switch(cart[i].size){
+                case 0:
+                    pizzaSizeName = 'P';
+                    break;
+
+                case 1:
+                    pizzaSizeName = 'M';
+                    break;
+
+                case 2:
+                    pizzaSizeName = 'G';
+                    break;
+            }
+
+            cartItem.querySelector('img').src = pizzaItem.img;
+            cartItem.querySelector('.cart--item-nome').innerHTML = `${pizzaItem.name} (${pizzaSizeName})`;
+            cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].quantidade
+
+            select('.cart').append(cartItem);
         }
     } else {
         select('aside').classList.remove('show');
