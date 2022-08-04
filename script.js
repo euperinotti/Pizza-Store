@@ -154,7 +154,20 @@ select('.pizzaInfo--addButton').addEventListener('click', () => {
 
 })
 
+select('.menu-openner').addEventListener('click', () => {
+    if(cart.length > 0){
+        select('aside').style.left = '0';
+    }
+});
+
+select('.menu-closer').addEventListener('click', () => {
+    select('aside').style.left = '100vw';
+})
+
 function updateCart() {
+
+    select('.menu-openner span').innerHTML = cart.length;
+
     if(cart.length > 0){
         select('aside').classList.add('show');
 
@@ -227,6 +240,7 @@ function updateCart() {
 
     } else {
         select('aside').classList.remove('show');
+        select('aside').style.left = '100vw';
     }
 }
 
